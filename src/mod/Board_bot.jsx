@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Square from "../Components/Square";
 import Modal from "../Components/Modal";
 
-const Board = () => {
+const Board_bot = () => {
   const [squares, setSquares] = useState(Array(9).fill(null));
   const [isXNext, setIsXNext] = useState(true);
   const [winningLine, setWinningLine] = useState([]);
@@ -107,4 +107,4 @@ const calculateWinner = (squares) => {
   return null;
 };
 
-export default Board;
+export default Board_bot;
