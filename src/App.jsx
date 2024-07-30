@@ -3,6 +3,7 @@ import Home from "./Components/Home";
 import Board_offline from "./mod/Board_offline";
 import Board_bot from "./mod/Board_bot";
 import Footer from "./Components/Footer";
+import Board_online from "./mod/Board_online";
 
 const App = () => {
   const [mode, setMode] = useState(null);
@@ -17,6 +18,7 @@ const App = () => {
         {!mode && <Home onSelectMode={handleSelectMode} />}
         {mode === "offline" && <Board_offline />}
         {mode === "bot" && <Board_bot />}
+        {mode === "online" && <Board_online/>}
       </div>
       <Footer />
     </div>
