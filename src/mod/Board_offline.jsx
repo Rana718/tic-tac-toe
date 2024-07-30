@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Square from "../Components/Square";
 import Modal from "../Components/Modal";
+import { getLineDirection } from "../utils/gameUtils";
 
 const Board_offline = () => {
   const [squares, setSquares] = useState(Array(9).fill(null));
@@ -46,18 +47,6 @@ const Board_offline = () => {
     checkGameOver(winner, squares);
   }, [squares]);
 
-  const getLineDirection = (line) => {
-    if (line[0] % 3 === line[2] % 3) {
-      return "vertical";
-    } else if (Math.floor(line[0] / 3) === Math.floor(line[2] / 3)) {
-      return "horizontal";
-    } else if (line.includes(0) && line.includes(4) && line.includes(8)) {
-      return "diagonal-left";
-    } else if (line.includes(2) && line.includes(4) && line.includes(6)) {
-      return "diagonal-right";
-    }
-    return "";
-  };
 
   let status;
   if (gameOver) {
