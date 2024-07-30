@@ -36,7 +36,7 @@ const Home = ({ onSelectMode }) => {
                 </div>
                 <div className="flex flex-col items-center">
                     <img src="Board_img.png" alt="Online Play with Player" className="w-48 rounded-lg h-48 mb-4" />
-                    <button className="px-6 py-3 bg-orange-400 text-white rounded-lg shadow-lg hover:bg-orange-500 transition-all duration-300" onClick={() => alert("Coming soon!")}>
+                    <button className="px-6 py-3 bg-orange-400 text-white rounded-lg shadow-lg hover:bg-orange-500 transition-all duration-300" onClick={() => onSelectMode("online")}>
                         Online play with player
                     </button>
                 </div>
