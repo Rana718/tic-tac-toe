@@ -13,12 +13,12 @@ const App = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-r from-blue-400 to-purple-500">
+    <div className="min-h-screen flex flex-col bg-gradient-to-r from-green-700 to-teal-500">
       <div className="flex-grow flex items-center justify-center">
         {!mode && <Home onSelectMode={handleSelectMode} />}
         {mode === "offline" && <Board_offline />}
         {mode === "bot" && <Board_bot />}
-        {mode === "online" && <Board_online/>}
+        {mode === "online" && <Board_online />}
       </div>
       <Footer />
     </div>
