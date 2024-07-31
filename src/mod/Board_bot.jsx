@@ -75,7 +75,7 @@ const BoardBot = () => {
         onClick={handleRestart}>
         Restart Game
       </button>
-      {gameOver && <Modal message={gameResult} onClose={handleRestart} />}
+      {gameOver && <Modal message={gameResult} onClose={handleRestart} button_message={"Play Again"} timer={null}/>}
     </div>
   );
 };
