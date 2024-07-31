@@ -16,7 +16,10 @@ const Board_online = () => {
   const [players, setPlayers] = useState({});
   const [playerSymbol, setPlayerSymbol] = useState("");
   const [lineDirection, setLineDirection] = useState("");
-  
+  const [timer, setTimer] = useState(null);
+  const [showFindNewPlayerButton, setShowFindNewPlayerButton] = useState(false);
+  const [findNewPlayer, setFindNewPlayer] = useState(false);
+
   const socket = useRef(null);
 
   useEffect(() => {
@@ -31,7 +34,9 @@ const Board_online = () => {
       setPlayers(players);
       setPlayerSymbol(players[socket.current.id]);
       setLoading(false);
+      setFindNewPlayer(false);
       setShowStartMessage(true);
+      setGameOver(false);
       setTimeout(() => {
         setShowStartMessage(false);
       }, 2000);
@@ -53,21 +58,46 @@ const Board_online = () => {
       setWinningLine([]);
       setGameOver(false);
       setGameResult("");
+      setShowFindNewPlayerButton(false);
+      setTimer(null);  
     });
 
-    socket.current.on("disconnect", (reason) => {
-      console.log("Socket.IO Disconnected: ", reason);
+    socket.current.on("startTimer", () => {
+      setTimer(20);
     });
 
-    socket.current.on("gameOver", ({ message })=>{
+    socket.current.on("userDisconnected", () => {
+      setGameResult("Your opponent has left the match.");
+      setGameOver(true);
+      setShowFindNewPlayerButton(true);
+      setFindNewPlayer(true);
+    });
+
+    socket.current.on("gameOver", ({ message }) => {
       setGameResult(message);
       setGameOver(true);
-    })
+    });
+
+    socket.current.on("showFindNewPlayerButton", () => {
+      setShowFindNewPlayerButton(true);
+      setFindNewPlayer(true);
+    });
 
     return () => {
       socket.current.disconnect();
     };
   }, []);
+
+  useEffect(() => {
+    if (timer === 0) {
+      setTimer(null);
+    } else if (timer > 0) {
+      const timerId = setTimeout(() => {
+        setTimer(timer - 1);
+      }, 1000);
+      return () => clearTimeout(timerId);
+    }
+  }, [timer]);
 
   const handleClick = (i) => {
     if (calculateWinner(squares) || squares[i] || gameOver) {
@@ -95,15 +125,22 @@ const Board_online = () => {
   const handleRestart = () => {
     socket.current.emit("restart", { roomID, player: playerSymbol });
     setLineDirection("");
+    setFindNewPlayer(false);
+  };
+
+  const handleFindNewPlayer = () => {
+    socket.current.emit("findNewPlayer");
+    setLoading(true);
+    setShowFindNewPlayerButton(false);
+    setFindNewPlayer(true);
   };
 
   const checkGameOver = (winner, squares) => {
     if (winner) {
-      
       socket.current.emit("gameOver", { roomID, winner: winner.player });
       setWinningLine(winner.line);
       setGameOver(true);
-      setLineDirection(getLineDirection(winner.line))
+      setLineDirection(getLineDirection(winner.line));
     } else if (!squares.includes(null)) {
       setGameResult("It's a Draw!");
       setGameOver(true);
@@ -135,19 +172,28 @@ const Board_online = () => {
           <div className="text-2xl font-bold mb-4 text-blue-700">{status}</div>
           <div className="grid grid-cols-3 gap-1">
             {squares.map((square, i) => (
-              <Square key={i} value={square} onClick={() => handleClick(i)} highlight={winningLine.includes(i)} lineDirection={lineDirection}/>
+              <Square key={i} value={square} onClick={() => handleClick(i)} highlight={winningLine.includes(i)} lineDirection={lineDirection} />
             ))}
           </div>
-          <button className="mt-4 px-6 py-3 bg-gradient-to-r from-green-400 to-blue-500 text-white rounded-full shadow-lg hover:from-green-500 hover:to-blue-600 transition-all duration-300 transform hover:scale-110"
-            onClick={handleRestart} >
-            Restart Game
-          </button>
-          {gameOver && <Modal message={gameResult} onClose={handleRestart} />}
+          
+          
+            {/* <button className="mt-4 px-6 py-3 bg-gradient-to-r from-green-400 to-blue-500 text-white rounded-full shadow-lg hover:from-green-500 hover:to-blue-600 transition-all duration-300 transform hover:scale-110"
+              onClick={handleRestart}>
+              Restart Game
+            </button> */}
+          
+          
+          {gameOver && (
+            <Modal
+              message={gameResult}
+              onClose={findNewPlayer ? handleFindNewPlayer : handleRestart}
+              button_message={findNewPlayer ? "Find New Player" : "Play Again"}
+              timer={timer}/>
+          )}
         </>
       )}
     </div>
   );
 };
-
 
 export default Board_online;
