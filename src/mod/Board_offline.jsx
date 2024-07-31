@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Square from "../Components/Square";
 import Modal from "../Components/Modal";
-import { getLineDirection } from "../utils/gameUtils";
+import { getLineDirection, calculateWinner } from "../utils/gameUtils";
 
 const Board_offline = () => {
   const [squares, setSquares] = useState(Array(9).fill(null));
@@ -69,35 +69,13 @@ const Board_offline = () => {
           />
         ))}
       </div>
-      <button
-        className="mt-4 px-6 py-3 bg-gradient-to-r from-green-400 to-blue-500 text-white rounded-full shadow-lg hover:from-green-500 hover:to-blue-600 transition-all duration-300 transform hover:scale-110"
-        onClick={handleRestart}
-      >
+      <button className="mt-4 px-6 py-3 bg-gradient-to-r from-green-400 to-blue-500 text-white rounded-full shadow-lg hover:from-green-500 hover:to-blue-600 transition-all duration-300 transform hover:scale-110"
+        onClick={handleRestart}>
         Restart Game
       </button>
-      {gameOver && <Modal message={gameResult} onClose={handleRestart} />}
+      {gameOver && <Modal message={gameResult} onClose={handleRestart} button_message={"Play Again"} timer={null}/>}
     </div>
   );
-};
-
-const calculateWinner = (squares) => {
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-  for (let i = 0; i < lines.length; i++) {
-    const [a, b, c] = lines[i];
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return { player: squares[a], line: [a, b, c] };
-    }
-  }
-  return null;
 };
 
 export default Board_offline;
