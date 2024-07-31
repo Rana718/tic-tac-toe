@@ -154,7 +154,7 @@ const Board_online = () => {
 
   let status;
   if (gameOver) {
-    status = gameResult;
+    status = "Match is Finish";
   } else {
     status = "Next player: " + (isXNext ? "X" : "O");
   }
