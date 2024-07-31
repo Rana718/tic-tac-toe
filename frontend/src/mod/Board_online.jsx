@@ -59,7 +59,7 @@ const Board_online = () => {
       setGameOver(false);
       setGameResult("");
       setShowFindNewPlayerButton(false);
-      setTimer(null);  
+      setTimer(null);
     });
 
     socket.current.on("startTimer", () => {
@@ -163,12 +163,12 @@ const Board_online = () => {
     <div className="flex flex-col items-center p-4 bg-gradient-to-r from-blue-200 to-purple-300 rounded-lg shadow-2xl transition-transform duration-500 ease-in-out transform hover:scale-105">
       {loading ? (
         <div className="flex items-center space-x-2">
-        <div className="text-2xl font-bold mb-4 text-blue-700 animate-pulse">Finding Your Opponent</div>
-        <svg className="w-6 h-6 text-blue-700 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
-        </svg>
-      </div>
+          <div className="text-2xl font-bold mb-4 text-blue-700 animate-pulse">Finding Your Opponent</div>
+          <svg className="w-6 h-6 text-blue-700 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
+          </svg>
+        </div>
       ) : showStartMessage ? (
         <div className="text-2xl font-bold mb-4 text-blue-700">
           Game Starting... You are: {playerSymbol}
@@ -181,14 +181,14 @@ const Board_online = () => {
               <Square key={i} value={square} onClick={() => handleClick(i)} highlight={winningLine.includes(i)} lineDirection={lineDirection} />
             ))}
           </div>
-          
-          
+
+
           {gameOver && (
             <Modal
               message={gameResult}
               onClose={findNewPlayer ? handleFindNewPlayer : handleRestart}
               button_message={findNewPlayer ? "Find New Player" : "Play Again"}
-              timer={timer}/>
+              timer={timer} />
           )}
         </>
       )}
