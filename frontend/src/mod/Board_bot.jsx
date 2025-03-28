@@ -64,7 +64,7 @@ const BoardBot = () => {
   let status = gameOver ? gameResult : "Next player: " + (isXNext ? "X" : "O");
 
   return (
-    <div className="flex flex-col items-center p-6 bg-gradient-to-br from-gray-800 to-slate-900 rounded-xl shadow-2xl transition-transform duration-500 ease-in-out transform hover:scale-105 border border-blue-500/20">
+    <div className="flex flex-col items-center p-6 bg-gradient-to-br from-gray-800 to-slate-900 rounded-xl shadow-2xl border border-blue-500/20">
       <div className="text-2xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-400">{status}</div>
       <div className="grid grid-cols-3 gap-3">
         {squares.map((square, i) => (

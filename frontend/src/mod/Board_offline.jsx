@@ -55,9 +55,9 @@ const Board_offline = () => {
   }
 
   return (
-    <div className="flex flex-col items-center p-6 bg-gradient-to-br from-gray-800 to-slate-900 rounded-xl shadow-2xl transition-transform duration-500 ease-in-out transform hover:scale-105 border border-purple-500/20">
+    <div className="flex flex-col items-center p-6 bg-gradient-to-br from-gray-800 to-slate-900 rounded-xl shadow-2xl border border-purple-500/20">
       <div className="text-2xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-400">{status}</div>
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-3 gap-3 px-2">
         {squares.map((square, i) => (
           <Square
             key={i}

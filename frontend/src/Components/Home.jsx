@@ -101,7 +101,6 @@ const Home = ({ onSelectMode }) => {
                     <InstructionCard number="3" text="First to get 3 in a row wins!" />
                 </div>
             </motion.div>
-            <Footer/>
         </motion.div>
     );
 };

@@ -29,12 +29,15 @@ const Board_online = () => {
   const [waitingRoom, setWaitingRoom] = useState(false)
   const [playerConnected, setPlayerConnected] = useState(false)
   const [unseenMessages, setUnseenMessages] = useState(0)
+  const [copied, setCopied] = useState(false)
 
   const socket = useRef(null)
   const messagesEndRef = useRef(null)
   const chatContainerRef = useRef(null)
   const boardRef = useRef(null)
   const chatOpenRef = useRef(showChat)
+
+  const Api_end = import.meta.env.VITE_API_END
 
   useEffect(() => {
     chatOpenRef.current = showChat
@@ -44,7 +47,7 @@ const Board_online = () => {
     const urlParams = new URLSearchParams(window.location.search)
     const roomFromUrl = urlParams.get("room")
     const socketOptions = roomFromUrl ? { query: { room: roomFromUrl } } : {}
-    socket.current = io("http://localhost:3000", socketOptions)
+    socket.current = io(Api_end, socketOptions)
 
     socket.current.on("connect", () => {
       console.log("Socket.IO Client Connected")
@@ -279,7 +282,7 @@ const Board_online = () => {
     <div className="flex flex-col items-center justify-center min-h-[50vh] w-full max-w-sm mx-5">
       <div
         ref={boardRef}
-        className="flex flex-col items-center p-6 bg-gradient-to-br from-gray-800 to-slate-900 rounded-xl shadow-2xl transition-all duration-300 ease-in-out border border-purple-500/20 relative w-full"
+        className="flex flex-col items-center py-6 bg-gradient-to-br from-gray-800 to-slate-900 rounded-xl shadow-2xl transition-all duration-300 ease-in-out border border-purple-500/20 relative w-full"
       >
         {!playerConnected ? (
           <div className="flex flex-col items-center space-y-4 py-8">
@@ -315,21 +318,26 @@ const Board_online = () => {
                 className="bg-gray-700 text-white px-3 py-2 rounded-l-md w-full text-sm focus:outline-none overflow-hidden text-ellipsis"
               />
               <button
-                onClick={() => navigator.clipboard.writeText(joinUrl)}
-                className="bg-cyan-500 hover:bg-cyan-600 text-white px-4 py-2 rounded-r-md whitespace-nowrap transition-colors duration-200"
+                onClick={() => {
+                  navigator.clipboard.writeText(joinUrl);
+                  setCopied(true);
+                  setTimeout(() => setCopied(false), 2000);
+                }}
+                className={`px-4 py-2 rounded-r-md text-white font-medium text-sm transition-all duration-300 ${copied ? "bg-green-600" : "bg-cyan-600 hover:bg-cyan-700"
+                  }`}
               >
-                Copy
+                {copied ? "Copied!" : "Copy"}
               </button>
             </div>
           </div>
         ) : showStartMessage ? (
-          <div className="text-xl sm:text-2xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-400 py-8 animate-fadeIn">
+          <div className="text-xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-400 py-2 animate-fadeIn">
             Game Starting... You are: {playerSymbol}
           </div>
         ) : (
           <>
             {renderStatus()}
-            <div className="grid grid-cols-3 gap-3 transition-opacity duration-300">
+            <div className="grid grid-cols-3 pb-8 gap-3 transition-opacity duration-300">
               {squares.map((square, i) => (
                 <Square
                   key={i}
