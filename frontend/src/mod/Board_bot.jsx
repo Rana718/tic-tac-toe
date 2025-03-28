@@ -64,14 +64,14 @@ const BoardBot = () => {
   let status = gameOver ? gameResult : "Next player: " + (isXNext ? "X" : "O");
 
   return (
-    <div className="flex flex-col items-center p-4 bg-gradient-to-r from-blue-200 to-purple-300 rounded-lg shadow-2xl transition-transform duration-500 ease-in-out transform hover:scale-105">
-      <div className="text-2xl font-bold mb-4 text-blue-700">{status}</div>
-      <div className="grid grid-cols-3 gap-2">
+    <div className="flex flex-col items-center p-6 bg-gradient-to-br from-gray-800 to-slate-900 rounded-xl shadow-2xl transition-transform duration-500 ease-in-out transform hover:scale-105 border border-blue-500/20">
+      <div className="text-2xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-400">{status}</div>
+      <div className="grid grid-cols-3 gap-3">
         {squares.map((square, i) => (
           <Square key={i} value={square} onClick={() => handleClick(i)} highlight={winningLine.includes(i)} lineDirection={lineDirection} />
         ))}
       </div>
-      <button className="mt-4 px-6 py-3 bg-gradient-to-r from-green-400 to-blue-500 text-white rounded-full shadow-lg hover:from-green-500 hover:to-blue-600 transition-all duration-300 transform hover:scale-110"
+      <button className="mt-6 px-8 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg shadow-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
         onClick={handleRestart}>
         Restart Game
       </button>
