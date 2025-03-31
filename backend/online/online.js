@@ -1,11 +1,7 @@
 const { randomUUID } = require('crypto');
-const Redis = require('ioredis');
+const { redisClient } = require('../services/redis.services.js');
 
 module.exports = (io) => {
-    const redisClient = new Redis({
-        host: process.env.REDIS_HOST || 'localhost',
-        port: process.env.REDIS_PORT || 6379
-    });
 
     const REDIS_PREFIX = {
         ROOM: 'room:',
@@ -14,7 +10,6 @@ module.exports = (io) => {
         TIMER: 'timer:'
     };
 
-    redisClient.on('error', (err) => console.error('Redis Client Error:', err));
 
     const generateRoomId = () => {
         return randomUUID().substring(0, 8);
