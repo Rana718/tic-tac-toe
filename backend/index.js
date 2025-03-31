@@ -7,6 +7,7 @@ const http = require('http');
 const { Server } = require('socket.io');
 const { createAdapter } = require('@socket.io/redis-adapter');
 const { pubClient, subClient } = require('./services/redis.services');
+const { standardLimiter } = require('./middleware');
 
 const app = express();
 const server = http.createServer(app);
@@ -23,6 +24,7 @@ require('./online/online')(io);
 
 app.use(cors());
 app.use(express.json());
+app.use(standardLimiter);
 
 app.use('/', routes);
 
