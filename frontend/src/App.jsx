@@ -37,7 +37,7 @@ const App = () => {
 
 const RedirectOnBack = () => {
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     const handlePopState = () => {
       navigate("/", { replace: true });
@@ -56,11 +56,11 @@ const RedirectOnBack = () => {
 const RoomRedirect = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  
+
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const roomParam = urlParams.get('room');
-    
+
     if (roomParam && location.pathname === '/') {
       navigate('/online', { replace: true });
     }
